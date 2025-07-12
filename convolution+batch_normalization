@@ -1,0 +1,306 @@
+module convb (
+  input wire [8:0] in0,  in1,  in2,  in3,  in4,  in5, in6,  in7,  in8,  in9,  in10, in11, in12, in13, in14, in15, in16, in17, in18, in19, in20, in21, in22, in23, in24, in25, in26, in27, in28, in29, in30, in31, in32, in33, in34, in35,
+  input wire [8:0] w0, w1, w2, w3, w4, w5, w6, w7, w8,
+  input wire [8:0] b0,
+  input wire [7:0] iexp,
+  input wire [7:0] wexp,
+  input wire [7:0] bexp,
+  input wire signed [8:0] gamma, beta, epsilon,
+  output wire [20:0] out0, out1, out2, out3, out4, out5, out6, out7, out8, out9, out10, out11, out12, out13, out14, out15
+  output wire [7:0] oexp
+);
+  wire signed [8:0] mean;
+  wire signed [16:0] variance;
+  //may need to multiply exponent
+  //need to change variance from [16:0] to [8:0]
+  
+  variance_36_numbers first (.in0(in0), .in1(in1), .in2(in2), .in3(in3), .in4(in4), .in5(in5), .in6(in6), .in7(in7), .in8(in8), .in9(in9), .in10(in10), .in11(in11), .in12(in12), .in13(in13), .in14(in14), .in15(in15), .in16(in16), .in17(in17), .in18(in18), .in19(in19), .in20(in20), .in21(in21), .in22(in22), .in23(in23), .in24(in24), .in25(in25), .in26(in26), .in27(in27), .in28(in28), .in29(in29), .in30(in30), .in31(in31), .in32(in32), .in33(in33), .in34(in34), .in35(in35), .mean(mean), .variance(variance));
+  
+  wire signed [16:0] we0, we1, we2, we3, we4, we5, we6, we7, we8;
+  wire signed [24:0] be0;
+  webe second (.w0(w0), .w1(w1), .w2(w2), .w3(w3), .w4(w4), .w5(w5), .w6(w6), .w7(w7), .w8(w8), .b0(b0), .gamma(gamma), .beta(beta), .epsilon(epsilon), .mean(mean), .variance(.variance), .we0(we0), .we1(we1), .we2(we2), .we3(we3), .we4(we4), .we5(we5), .we6(we6), .we7(we7), .we8(we8), .be0(be0));
+
+  //may need to change weight and bias exponent
+  //need to change weight and bias to [8:0]
+  convolution map0 (.i0(in0), .i1(in1), .i2(in2), .i3(in6), .i4(in7), .i5(in8), .i6(in12), .i7(in13), .i8(in14), .w0(we0), .w1(we1), .w2(we2), .w3(we3), .w4(we4), .w5(we5), .w6(we6), .w7(we7), .w8(we8), .b0(be0), .out(out0));
+  convolution map1 (.i0(in1), .i1(in2), .i2(in3), .i3(in7), .i4(in8), .i5(in9), .i6(in13), .i7(in14), .i8(in15), .w0(we0), .w1(we1), .w2(we2), .w3(we3), .w4(we4), .w5(we5), .w6(we6), .w7(we7), .w8(we8), .b0(be0), .out(out1));
+  convolution map2 (.i0(in2), .i1(in3), .i2(in4), .i3(in8), .i4(in9), .i5(in10), .i6(in14), .i7(in15), .i8(in16), .w0(we0), .w1(we1), .w2(we2), .w3(we3), .w4(we4), .w5(we5), .w6(we6), .w7(we7), .w8(we8), .b0(be0), .out(out2));
+  convolution map3 (.i0(in3), .i1(in4), .i2(in5), .i3(in9), .i4(in10), .i5(in11), .i6(in15), .i7(in16), .i8(in17), .w0(we0), .w1(we1), .w2(we2), .w3(we3), .w4(we4), .w5(we5), .w6(we6), .w7(we7), .w8(we8), .b0(be0), .out(out3));
+  
+  
+  convolution map4 (.i0(in6), .i1(in7), .i2(in8), .i3(in12), .i4(in13), .i5(in14), .i6(in18), .i7(in19), .i8(in20), .w0(we0), .w1(we1), .w2(we2), .w3(we3), .w4(we4), .w5(we5), .w6(we6), .w7(we7), .w8(we8), .b0(be0), .out(out4));
+  convolution map5 (.i0(in7), .i1(in8), .i2(in9), .i3(in13), .i4(in14), .i5(in15), .i6(in19), .i7(in20), .i8(in21), .w0(we0), .w1(we1), .w2(we2), .w3(we3), .w4(we4), .w5(we5), .w6(we6), .w7(we7), .w8(we8), .b0(be0), .out(out5));
+  convolution map6 (.i0(in8), .i1(in9), .i2(in10), .i3(in14), .i4(in15), .i5(in16), .i6(in20), .i7(in21), .i8(in22), .w0(we0), .w1(we1), .w2(we2), .w3(we3), .w4(we4), .w5(we5), .w6(we6), .w7(we7), .w8(we8), .b0(be0), .out(out6));
+  convolution map7 (.i0(in9), .i1(in10), .i2(in11), .i3(in15), .i4(in16), .i5(in7), .i6(in21), .i7(in22), .i8(in23), .w0(we0), .w1(we1), .w2(we2), .w3(we3), .w4(we4), .w5(we5), .w6(we6), .w7(we7), .w8(we8), .b0(be0), .out(out7));
+  
+  
+  convolution map8 (.i0(in12), .i1(in13), .i2(in14), .i3(in18), .i4(in19), .i5(in20), .i6(in24), .i7(in25), .i8(in26), .w0(we0), .w1(we1), .w2(we2), .w3(we3), .w4(we4), .w5(we5), .w6(we6), .w7(we7), .w8(we8), .b0(be0), .out(out8));
+  convolution map9 (.i0(in13), .i1(in14), .i2(in15), .i3(in19), .i4(in20), .i5(in21), .i6(in25), .i7(in26), .i8(in27), .w0(we0), .w1(we1), .w2(we2), .w3(we3), .w4(we4), .w5(we5), .w6(we6), .w7(we7), .w8(we8), .b0(be0), .out(out9));
+  convolution map10 (.i0(in14), .i1(in15), .i2(in16), .i3(in20), .i4(in21), .i5(in22), .i6(in26), .i7(in27), .i8(in28), .w0(we0), .w1(we1), .w2(we2), .w3(we3), .w4(we4), .w5(we5), .w6(we6), .w7(we7), .w8(we8), .b0(be0), .out(out10));
+  convolution map11 (.i0(in15), .i1(in16), .i2(in17), .i3(in21), .i4(in22), .i5(in23), .i6(in27), .i7(in28), .i8(in29), .w0(we0), .w1(we1), .w2(we2), .w3(we3), .w4(we4), .w5(we5), .w6(we6), .w7(we7), .w8(we8), .b0(be0), .out(out11));
+  
+  
+  convolution map12 (.i0(in18), .i1(in19), .i2(in20), .i3(in24), .i4(in25), .i5(in26), .i6(in30), .i7(in31), .i8(in32), .w0(we0), .w1(we1), .w2(we2), .w3(we3), .w4(we4), .w5(we5), .w6(we6), .w7(we7), .w8(we8), .b0(be0), .out(out12));
+  convolution map13 (.i0(in19), .i1(in20), .i2(in21), .i3(in25), .i4(in26), .i5(in27), .i6(in31), .i7(in32), .i8(in33), .w0(we0), .w1(we1), .w2(we2), .w3(we3), .w4(we4), .w5(we5), .w6(we6), .w7(we7), .w8(we8), .b0(be0), .out(out13));
+  convolution map14 (.i0(in20), .i1(in21), .i2(in22), .i3(in26), .i4(in27), .i5(in28), .i6(in32), .i7(in33), .i8(in34), .w0(we0), .w1(we1), .w2(we2), .w3(we3), .w4(we4), .w5(we5), .w6(we6), .w7(we7), .w8(we8), .b0(be0), .out(out14));
+  convolution map15 (.i0(in21), .i1(in22), .i2(in23), .i3(in27), .i4(in28), .i5(in29), .i6(in33), .i7(in34), .i8(in35), .w0(we0), .w1(we1), .w2(we2), .w3(we3), .w4(we4), .w5(we5), .w6(we6), .w7(we7), .w8(we8), .b0(be0), .out(out15));
+  
+  //assign oexp = ;
+  
+  
+  
+  
+  //wire [20:0] biassm = {bfpb[8], 5'b00000, bfpb[7:0], 7'b0000000};
+  
+  //function  automatic bit sign_multiply;
+  //  input a, b;
+  //  begin
+  //  	sign_multiply = a^b;
+  //  end
+  //endfunction
+  
+  //function automatic [7:0] exponent_multiply;
+  //  input [7:0] a, b;
+  //  begin
+  //    exponent_multiply = a+b-8'd127;
+  //  end
+  //endfunction
+  
+  //function automatic [15:0] mantissa_multiply;
+  //  input [7:0] a, b;
+  //  begin
+  //    mantissa_multiply = a*b;
+  //  end
+  //endfunction
+  
+  //function automatic [16:0] bfp_multiply;
+  //  input [8:0] a, b;
+  //  begin
+  //    bfp_multiply = {sign_multiply(a[8], b[8]), mantissa_multiply(a[7:0],b[7:0])};
+  //  end
+  //endfunction
+  
+  //function [20:0] addition;
+  //  input signed[16:0] a, b, c, d, e, f, g, h, i;
+  //  reg [20:0] sum;
+  //  begin
+  //    sum = 21'd0;
+  //    sum = sum + $signed(a);
+  //    sum = sum + $signed(b);
+  //    sum = sum + $signed(c);
+  //    sum = sum + $signed(d);
+  //    sum = sum + $signed(e);
+  //    sum = sum + $signed(f);
+  //    sum = sum + $signed(g);
+  //    sum = sum + $signed(h);
+  //    sum = sum + $signed(i);
+  //    sum = sum + biassm;
+  //    addition = sum;
+  //  end
+  //endfunction
+  
+  //assign oexp = exponent_multiply(iexp,wexp);
+  
+  
+  //genvar i;
+  //generate
+  //  for (i = 0; i < 15; i = i + 1)
+  //    begin
+  //      if (i % 5 < 3)
+  //        begin
+  //          wire [16:0] temp [0:8];
+  //          assign temp[0] = bfp_multiply(bfpi[i], bfpw[0]);
+  //          assign temp[1] = bfp_multiply(bfpi[i+1], bfpw[1]);
+  //          assign temp[2] = bfp_multiply(bfpi[i+2], bfpw[2]);
+  //          assign temp[3] = bfp_multiply(bfpi[i+5], bfpw[3]);
+  //          assign temp[4] = bfp_multiply(bfpi[i+6], bfpw[4]);
+  //          assign temp[5] = bfp_multiply(bfpi[i+7], bfpw[5]);
+  //          assign temp[6] = bfp_multiply(bfpi[i+10], bfpw[6]);
+  //          assign temp[7] = bfp_multiply(bfpi[i+11], bfpw[7]);
+  //          assign temp[8] = bfp_multiply(bfpi[i+12], bfpw[8]);
+  //          wire [20:0] sum = addition(temp[0], temp[1], temp[2], temp[3], temp[4], temp[5], temp[6], temp[7], temp[8]);
+  //          if (i <= 2)
+  //        	  begin
+  //              assign outchannel[i] = sum;
+  //            end
+  //          else if (i <= 7)
+  //            begin
+  //              assign outchannel[i-2] = sum;
+  //            end
+  //          else
+  //            begin
+  //              assign outchannel[i-4] = sum;
+  //            end
+  //        end 
+  //    end
+  //endgenerate
+endmodule
+
+module sign_multiply(
+  input wire a, b,
+  output wire sign
+);
+  assign sign = a^b;
+endmodule
+
+module exponent_multiply(
+  input wire [7:0] a, b,
+  output wire [7:0] exponent
+);
+  assign exponent_multiply = a+b-8'd127;
+endmodule
+
+module mantissa_multiply (
+  input [7:0] a, b,
+  output wire [15:0] mantissa
+);
+  assign mantissa_multiply = a*b;
+endmodule
+
+module bfp_multiply (
+  input wire [8:0] a, b,
+  output wire [16:0] product
+);
+  wire sign;
+  wire mantissa;
+  sign_multiply get_sign (.a(a[8]), .b(b[8]), .sign(sign));
+  mantissa_multiply get_mantissa (.a(a[7:0]), .b(b[7:0]), .mantissa(mantissa));
+  assign product = {sign, mantissa};
+endmodule
+
+module addition (
+  input wire signed [16:0] a, b, c, d, e, f, g, h, i,
+  input wire signed [20:0] bias,
+  output wire signed [20:0] sum
+);
+  assign sum = $signed(a) + $signed(b) + $signed(c) + $signed(d) + $signed(e) + $signed(f) + $signed(g) + $signed(h) + $signed(i) + $signed(bias);
+  
+endmodule
+
+module convolution (
+  input wire [8:0] i0, i1, i2, i3, i4, i5 ,i6, i7, i8,
+  input wire [8:0] w0, w1, w2, w3, w4, w5, w6, w7, w8,
+  input wire [8:0] b0,
+  output wire [20:0] out
+);
+  wire signed [16:0] a, b, c, d, e, f, g, h, i;
+  bfp_multiply a0 (.a(i0), .b(w0), .product(a));
+  bfp_multiply a1 (.a(i1), .b(w1), .product(b));
+  bfp_multiply a2 (.a(i2), .b(w2), .product(c));
+  bfp_multiply a3 (.a(i3), .b(w3), .product(d));
+  bfp_multiply a4 (.a(i4), .b(w4), .product(e));
+  bfp_multiply a5 (.a(i5), .b(w5), .product(f));
+  bfp_multiply a6 (.a(i6), .b(w6), .product(g));
+  bfp_multiply a7 (.a(i7), .b(w7), .product(h));
+  bfp_multiply a8 (.a(i8), .b(w8), .product(i));
+  addition get (.a(a), .b(b), .c(c), .d(d), .e(e), .f(f), .g(g), .h(h), .i(i), .bias(b0), .sum(out));
+  
+endmodule
+
+module webe (
+  input wire signed [8:0] w0, w1, w2, w3, w4, w5, w6, w7, w8,
+  input wire signed [8:0] b0,
+  input wire signed [8:0] gamma, beta, epsilon, mean
+  input wire signed [16:0] variance,
+  output wire signed [16:0] we0, we1, we2, we3, we4, we5, we6, we7, we8,
+  output wire signed [24:0] be0
+);
+  assign we0 = $signed(w0) * $signed(gamma / (variance+epsilon)**0.5;
+  assign we1 = $signed(w1) * $signed(gamma / (variance+epsilon)**0.5;
+  assign we2 = $signed(w2) * $signed(gamma / (variance+epsilon)**0.5;
+  assign we3 = $signed(w3) * $signed(gamma / (variance+epsilon)**0.5;
+  assign we4 = $signed(w4) * $signed(gamma / (variance+epsilon)**0.5;
+  assign we5 = $signed(w5) * $signed(gamma / (variance+epsilon)**0.5;
+  assign we6 = $signed(w6) * $signed(gamma / (variance+epsilon)**0.5;
+  assign we7 = $signed(w7) * $signed(gamma / (variance+epsilon)**0.5;
+  assign we8 = $signed(w8) * $signed(gamma / (variance+epsilon)**0.5;
+  
+  assign be0 = ($signed(b0) - $signed(mean)) * ($signed(gamma)/($signed(variance)+$signed(epsilon))**0.5) + $signed(beta);
+endmodule
+
+
+
+//module mean_36_numbers (
+//  input  wire signed [8:0] in0,  in1,  in2,  in3,  in4,  in5,
+//                           in6,  in7,  in8,  in9,  in10, in11,
+//                           in12, in13, in14, in15, in16, in17,
+//                           in18, in19, in20, in21, in22, in23, 
+//                           in24, in25, in26, in27, in28, in29, 
+//                           in30, in31, in32, in33, in34, in35,
+//  output wire signed [14:0] sum,
+//  output wire signed [8:0] mean
+//);
+//  //wire signed [14:0] sum;
+//  assign sum = in0 + in1 + in2 + in3 + in4 + in5 +
+//               in6 + in7 + in8 + in9 + in10 + in11 +
+//               in12 + in13 + in14 + in15 + in16 + in17 +
+//               in18 + in19 + in20 + in21 + in22 + in23 + 
+//               in24 + in25 + in26 + in27 + in28 + in29 + 
+//               in30 + in31 + in32 + in33 + in34 + in35;
+//  assign mean = sum / 36;
+//endmodule
+
+module variance_36_numbers (
+  input  wire signed [8:0] in0,  in1,  in2,  in3,  in4,  in5,
+                           in6,  in7,  in8,  in9,  in10, in11,
+                           in12, in13, in14, in15, in16, in17,
+                           in18, in19, in20, in21, in22, in23, 
+                           in24, in25, in26, in27, in28, in29, 
+                           in30, in31, in32, in33, in34, in35,
+  //output wire signed [14:0] sum,
+  output wire signed [8:0] mean,
+  //output wire signed [22:0] vsum,
+  output wire signed [16:0] variance
+);
+  wire signed [14:0] sum = in0 + in1 + in2 + in3 + in4 + in5 +
+               in6 + in7 + in8 + in9 + in10 + in11 +
+               in12 + in13 + in14 + in15 + in16 + in17 +
+               in18 + in19 + in20 + in21 + in22 + in23 + 
+               in24 + in25 + in26 + in27 + in28 + in29 + 
+               in30 + in31 + in32 + in33 + in34 + in35;
+  assign mean = sum / 36;
+  
+  wire signed [16:0] v0 = (in0 - mean) ** 2;
+  wire signed [16:0] v1 = (in1 - mean) ** 2;
+  wire signed [16:0] v2 = (in2 - mean) ** 2;
+  wire signed [16:0] v3 = (in3 - mean) ** 2;
+  wire signed [16:0] v4 = (in4 - mean) ** 2;
+  wire signed [16:0] v5 = (in5 - mean) ** 2;
+  wire signed [16:0] v6 = (in6 - mean) ** 2;
+  wire signed [16:0] v7 = (in7 - mean) ** 2;
+  wire signed [16:0] v8 = (in8 - mean) ** 2;
+  wire signed [16:0] v9 = (in9 - mean) ** 2;
+  wire signed [16:0] v10 = (in10 - mean) ** 2;
+  wire signed [16:0] v11 = (in11 - mean) ** 2;
+  wire signed [16:0] v12 = (in12 - mean) ** 2;
+  wire signed [16:0] v13 = (in13 - mean) ** 2;
+  wire signed [16:0] v14 = (in14 - mean) ** 2;
+  wire signed [16:0] v15 = (in15 - mean) ** 2;
+  wire signed [16:0] v16 = (in16 - mean) ** 2;
+  wire signed [16:0] v17 = (in17 - mean) ** 2;
+  wire signed [16:0] v18 = (in18 - mean) ** 2;
+  wire signed [16:0] v19 = (in19 - mean) ** 2;
+  wire signed [16:0] v20 = (in20 - mean) ** 2;
+  wire signed [16:0] v21 = (in21 - mean) ** 2;
+  wire signed [16:0] v22 = (in22 - mean) ** 2;
+  wire signed [16:0] v23 = (in23 - mean) ** 2;
+  wire signed [16:0] v24 = (in24 - mean) ** 2;
+  wire signed [16:0] v25 = (in25 - mean) ** 2;
+  wire signed [16:0] v26 = (in26 - mean) ** 2;
+  wire signed [16:0] v27 = (in27 - mean) ** 2;
+  wire signed [16:0] v28 = (in28 - mean) ** 2;
+  wire signed [16:0] v29 = (in29 - mean) ** 2;
+  wire signed [16:0] v30 = (in30 - mean) ** 2;
+  wire signed [16:0] v31 = (in31 - mean) ** 2;
+  wire signed [16:0] v32 = (in32 - mean) ** 2;
+  wire signed [16:0] v33 = (in33 - mean) ** 2;
+  wire signed [16:0] v34 = (in34 - mean) ** 2;
+  wire signed [16:0] v35 = (in35 - mean) ** 2;
+  wire signed [22:0] vsum = v0 + v1 + v2 + v3 + v4 + v5 +
+               v6 + v7 + v8 + v9 + v10 + v11 +
+               v12 + v13 + v14 + v15 + v16 + v17 +
+               v18 + v19 + v20 + v21 + v22 + v23 + 
+               v24 + v25 + v26 + v27 + v28 + v29 + 
+               v30 + v31 + v32 + v33 + v34 + v35;
+  assign variance = vsum / 36;
+endmodule
