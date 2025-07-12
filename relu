@@ -1,0 +1,24 @@
+module relu (
+  input wire [20:0] in0, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12, in13, in14, in15,
+  input wire [7:0] iexp,
+  output wire [20:0] out0, out1, out2, out3, out4, out5, out6, out7, out8, out9, out10, out11, out12, out13, out14, out15,
+  output wire [7:0] oexp
+);
+  assign out0 = (in0[20] == 1'b1) ? 21'b0 : in0;
+  assign out1 = (in1[20] == 1'b1) ? 21'b0 : in1;
+  assign out2 = (in2[20] == 1'b1) ? 21'b0 : in2;
+  assign out3 = (in3[20] == 1'b1) ? 21'b0 : in3;
+  assign out4 = (in4[20] == 1'b1) ? 21'b0 : in4;
+  assign out5 = (in5[20] == 1'b1) ? 21'b0 : in5;
+  assign out6 = (in6[20] == 1'b1) ? 21'b0 : in6;
+  assign out7 = (in7[20] == 1'b1) ? 21'b0 : in7;
+  assign out8 = (in8[20] == 1'b1) ? 21'b0 : in8;
+  assign out9 = (in9[20] == 1'b1) ? 21'b0 : in9;
+  assign out10 = (in10[20] == 1'b1) ? 21'b0 : in10;
+  assign out11 = (in11[20] == 1'b1) ? 21'b0 : in11;
+  assign out12 = (in12[20] == 1'b1) ? 21'b0 : in12;
+  assign out13 = (in13[20] == 1'b1) ? 21'b0 : in13;
+  assign out14 = (in14[20] == 1'b1) ? 21'b0 : in14;
+  assign out15 = (in15[20] == 1'b1) ? 21'b0 : in15;
+  assign oexp = iexp;
+endmodule
