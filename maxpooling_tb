@@ -1,0 +1,62 @@
+`timescale 1ns/1ps
+
+module tb_maxpooling;
+
+  // Inputs
+  reg [7:0] i0, i1, i2, i3,
+            i4, i5, i6, i7,
+            i8, i9, i10, i11,
+            i12, i13, i14, i15;
+
+  // Outputs
+  wire [7:0] o0, o1, o2, o3;
+
+  // Instantiate the Unit Under Test (UUT)
+  maxpooling uut (
+    .i0(i0), .i1(i1), .i2(i2), .i3(i3),
+    .i4(i4), .i5(i5), .i6(i6), .i7(i7),
+    .i8(i8), .i9(i9), .i10(i10), .i11(i11),
+    .i12(i12), .i13(i13), .i14(i14), .i15(i15),
+    .o0(o0), .o1(o1), .o2(o2), .o3(o3)
+  );
+
+  initial begin
+    $display("Starting testbench for maxpooling...");
+
+    // Test Case 1: All inputs are distinct
+    i0 = 8'h00; i1 = 8'h10; i2 = 8'h20; i3 = 8'h30;
+    i4 = 8'h40; i5 = 8'h50; i6 = 8'h60; i7 = 8'h70;
+    i8 = 8'h80; i9 = 8'h90; i10 = 8'ha0; i11 = 8'hb0;
+    i12 = 8'hc0; i13 = 8'hd0; i14 = 8'he0; i15 = 8'hf0;
+    #10;
+    $display("Test 1: o0=%h o1=%h o2=%h o3=%h", o0, o1, o2, o3);
+
+    // Test Case 2: Max at each corner
+    i0 = 8'hff; i1 = 8'h00; i2 = 8'h00; i3 = 8'h00;
+    i4 = 8'h00; i5 = 8'h00; i6 = 8'h00; i7 = 8'h00;
+    i8 = 8'h00; i9 = 8'h00; i10 = 8'h00; i11 = 8'h00;
+    i12 = 8'h00; i13 = 8'h00; i14 = 8'h00; i15 = 8'hff;
+    #10;
+    $display("Test 2: o0=%h o1=%h o2=%h o3=%h", o0, o1, o2, o3);
+
+    // Test Case 3: All equal
+    i0 = 8'haa; i1 = 8'haa; i2 = 8'haa; i3 = 8'haa;
+    i4 = 8'haa; i5 = 8'haa; i6 = 8'haa; i7 = 8'haa;
+    i8 = 8'haa; i9 = 8'haa; i10 = 8'haa; i11 = 8'haa;
+    i12 = 8'haa; i13 = 8'haa; i14 = 8'haa; i15 = 8'haa;
+    #10;
+    $display("Test 3: o0=%h o1=%h o2=%h o3=%h", o0, o1, o2, o3);
+
+    // Test Case 4: Random values
+    i0 = 8'h12; i1 = 8'h34; i2 = 8'h56; i3 = 8'h78;
+    i4 = 8'h9a; i5 = 8'hbc; i6 = 8'hde; i7 = 8'hf0;
+    i8 = 8'h01; i9 = 8'h23; i10 = 8'h45; i11 = 8'h67;
+    i12 = 8'h89; i13 = 8'hab; i14 = 8'hcd; i15 = 8'hef;
+    #10;
+    $display("Test 4: o0=%h o1=%h o2=%h o3=%h", o0, o1, o2, o3);
+
+    $display("Testbench completed.");
+    #20 $finish;
+  end
+
+endmodule
