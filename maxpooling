@@ -1,0 +1,22 @@
+module maxpooling (
+  input wire [7:0] i0, i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12, i13, i14, i15,
+  output wire [7:0] o0, o1, o2, o3
+);
+  findmax max0 (.a(i0), .b(i1), .c(i4), .d(i5), .max(o0));
+  findmax max1 (.a(i2), .b(i3), .c(i6), .d(i7), .max(o1));
+  findmax max2 (.a(i8), .b(i9), .c(i12), .d(i13), .max(o2));
+  findmax max3 (.a(i10), .b(i11), .c(i14), .d(i15), .max(o3));
+           
+endmodule
+
+module findmax (
+  input wire [7:0] a, b, c, d,
+  output wire [7:0] max
+);
+
+  wire [7:0] tmp0, tmp1;
+  assign tmp0 = (a >= b) ? a : b;
+  assign tmp1 = (c >= d) ? c : d;
+  assign max = (tmp0 >= tmp1) ? tmp0 : tmp1;
+  
+endmodule
