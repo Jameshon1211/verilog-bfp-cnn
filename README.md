@@ -7,9 +7,9 @@ modules related to bfp pregress:
 2. conversion from fp32 to double bfp + tb     (100%)
 
 modules related to cnn progress:
-1. convolution fusing batch normalization layer (90%)
+1. convolution fusing batch normalization layer (99%)
 2. reluactivation layer + tb                   (100%)
 3. maxpooling layer + tb                       (100%)
-4. fullyconnected layer                          (0%)
+4. fullyconnected layer + tb                   (100%)
 5. softmax activation layer                      (0%)
 6. connection between layers                     (0%)
