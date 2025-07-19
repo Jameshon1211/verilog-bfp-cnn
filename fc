@@ -2,20 +2,27 @@ module fc (
   input wire signed [8:0] in0, in1, in2, in3,
   input wire signed [8:0] w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23, w24, w25, w26, w27, w28, w29, w30, w31, w32, w33, w34, w35, w36, w37, w38, w39, b0,
   input wire [7:0] iexp, wexp, bexp,
-  output wire signed [8:0] out0, out1, out2, out3,
+  output wire signed [8:0] out0, out1, out2, out3, out4, out5, out6, out7, out8, out9, 
   output wire [7:0] oexp
 );
   wire [7:0] tmpexp;
   exponent_multiply exp (.a(iexp), .b(wexp), .exponent(tmpexp));
   wire signed [16:0] shifted_bias = {b0[8], 1'b0, b0[7:0], 7'b0000000} >> tmpexp - bexp;
-  wire [20:0] tmpo0, tmpo1, tmpo2, tmpo3;
-  wire [2:0] overflow0, overflow1, overflow2, overflow3, expshift;
-  fully first0 (.i0(in0), .w0(w0), .w1(w1), .w2(w2), .w3(w3), .w4(w4), .w5(w5), .w6(w6), .w7(w7), .w8(w8), .w9(w9), .b0(shifted_bias), .out(tmpo0), .overflow(overflow0));
-  fully first1 (.i0(in1), .w0(w10), .w1(w11), .w2(w12), .w3(w13), .w4(w14), .w5(w15), .w6(w16), .w7(w17), .w8(w18), .w9(w19), .b0(shifted_bias), .out(tmpo1), .overflow(overflow1));
-  fully first2 (.i0(in2), .w0(w20), .w1(w21), .w2(w22), .w3(w23), .w4(w24), .w5(w25), .w6(w26), .w7(w27), .w8(w28), .w9(w29), .b0(shifted_bias), .out(tmpo2), .overflow(overflow2));
-  fully first3 (.i0(in3), .w0(w30), .w1(w31), .w2(w32), .w3(w33), .w4(w34), .w5(w35), .w6(w36), .w7(w37), .w8(w38), .w9(w39), .b0(shifted_bias), .out(tmpo3), .overflow(overflow3));
+  wire [18:0] tmpo0, tmpo1, tmpo2, tmpo3, tmpo4, tmpo5, tmpo6, tmpo7, tmpo8, tmpo9;
+  wire [1:0] overflow0, overflow1, overflow2, overflow3, overflow4, overflow5, overflow6, overflow7, overflow8, overflow9, expshift;
+  fully first0 (.i0(in0), .i1(in1), .i2(in2), .i3(in3), .w0(w0), .w1(w10), .w2(w20), .w3(w30), .b0(shifted_bias), .out(tmpo0), .overflow(overflow0));
+  fully first0 (.i0(in0), .i1(in1), .i2(in2), .i3(in3), .w0(w1), .w1(w11), .w2(w21), .w3(w31), .b0(shifted_bias), .out(tmpo1), .overflow(overflow1));
+  fully first0 (.i0(in0), .i1(in1), .i2(in2), .i3(in3), .w0(w2), .w1(w12), .w2(w22), .w3(w32), .b0(shifted_bias), .out(tmpo2), .overflow(overflow2));
+  fully first0 (.i0(in0), .i1(in1), .i2(in2), .i3(in3), .w0(w3), .w1(w13), .w2(w23), .w3(w33), .b0(shifted_bias), .out(tmpo3), .overflow(overflow3));
+  fully first0 (.i0(in0), .i1(in1), .i2(in2), .i3(in3), .w0(w4), .w1(w14), .w2(w24), .w3(w34), .b0(shifted_bias), .out(tmpo4), .overflow(overflow4));
+  fully first0 (.i0(in0), .i1(in1), .i2(in2), .i3(in3), .w0(w5), .w1(w15), .w2(w25), .w3(w35), .b0(shifted_bias), .out(tmpo5), .overflow(overflow5));
+  fully first0 (.i0(in0), .i1(in1), .i2(in2), .i3(in3), .w0(w6), .w1(w16), .w2(w26), .w3(w36), .b0(shifted_bias), .out(tmpo6), .overflow(overflow6));
+  fully first0 (.i0(in0), .i1(in1), .i2(in2), .i3(in3), .w0(w7), .w1(w17), .w2(w27), .w3(w37), .b0(shifted_bias), .out(tmpo7), .overflow(overflow7));
+  fully first0 (.i0(in0), .i1(in1), .i2(in2), .i3(in3), .w0(w8), .w1(w18), .w2(w28), .w3(w38), .b0(shifted_bias), .out(tmpo8), .overflow(overflow8));
+  fully first0 (.i0(in0), .i1(in1), .i2(in2), .i3(in3), .w0(w9), .w1(w19), .w2(w29), .w3(w39), .b0(shifted_bias), .out(tmpo9), .overflow(overflow9));
+
   
-  maxoverflow get_shift (.a(overflow0), .b(overflow1), .c(overflow2), .d(overflow3), .max(expshift));
+  maxoverflow get_shift (.a(overflow0), .b(overflow1), .c(overflow2), .d(overflow3), .e(overflow4), .f(overflow5), .g(overflow6), .h(overflow7), .i(overflow8), .j(overflow9), .max(expshift));
 
   assign oexp = tmpexp + expshift;
   assign out0 = tmpo0[20:12] + tmpo0[11];
@@ -63,49 +70,47 @@ endmodule
 
 
 module fcaddition (
-  input wire signed [16:0] a, b, c, d, e, f, g, h, i, j,
+  input wire signed [16:0] a, b, c, d,
   input wire signed [16:0] bias,
-  output wire signed [20:0] sum,
-  output reg [2:0] overflow
+  output wire signed [18:0] sum,
+  output reg [1:0] overflow
 );
-  assign sum = $signed(a) + $signed(b) + $signed(c) + $signed(d) + $signed(e) + $signed(f) + $signed(g) + $signed(h) + $signed(i) + $signed(j) + $signed(bias);
+  assign sum = $signed(a) + $signed(b) + $signed(c) + $signed(d) + $signed(bias);
   always @(*) begin
-      if (sum[19]) overflow = 3'b101;
-      else if (sum[18]) overflow = 3'b100;
-      else if (sum[17]) overflow = 3'b011;
-      else if (sum[16]) overflow = 3'b010;
-      else if (sum[15]) overflow = 3'b001;
-      else overflow = 3'b000;
+      if (sum[17]) overflow = 2'b11;
+      else if (sum[16]) overflow = 2'b10;
+      else if (sum[15]) overflow = 2'b01;
+      else overflow = 2'b00;
   end
 endmodule
 
 module fully (
-  input wire [8:0] i0,
-  input wire [8:0] w0, w1, w2, w3, w4, w5, w6, w7, w8, w9,
+  input wire [8:0] i0, i1, i2, i3,
+  input wire [8:0] w0, w1, w2, w3,
   input wire [16:0] b0,
   output wire [20:0] out,
   output wire [2:0] overflow
 );
-  wire signed [16:0] a, b, c, d, e, f, g, h, i, j;
+  wire signed [16:0] a, b, c, d;
   bfp_multiply a0 (.a(i0), .b(w0), .product(a));
   bfp_multiply a1 (.a(i0), .b(w1), .product(b));
   bfp_multiply a2 (.a(i0), .b(w2), .product(c));
   bfp_multiply a3 (.a(i0), .b(w3), .product(d));
-  bfp_multiply a4 (.a(i0), .b(w4), .product(e));
-  bfp_multiply a5 (.a(i0), .b(w5), .product(f));
-  bfp_multiply a6 (.a(i0), .b(w6), .product(g));
-  bfp_multiply a7 (.a(i0), .b(w7), .product(h));
-  bfp_multiply a8 (.a(i0), .b(w8), .product(i));
-  bfp_multiply a9 (.a(i0), .b(w9), .product(j));
-  fcaddition get (.a(a), .b(b), .c(c), .d(d), .e(e), .f(f), .g(g), .h(h), .i(i), .j(j), .bias(b0), .sum(out), .overflow(overflow));
+  fcaddition get (.a(a), .b(b), .c(c), .d(d), .bias(b0), .sum(out), .overflow(overflow));
 endmodule
 
 module maxoverflow (
-  input wire [2:0] a, b, c, d,
-  output wire [2:0] max
+  input wire [1:0] a, b, c, d, e, f, g, h, i, j,
+  output wire [1:0] max
 );
-  wire [2:0] tmp0, tmp1;
+  wire [1:0] tmp0, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
   assign tmp0 = (a >= b) ? a : b;
   assign tmp1 = (c >= d) ? c : d;
-  assign max = (tmp0 >= tmp1) ? tmp0 : tmp1;
+  assign tmp2 = (e >= f) ? e : f;
+  assign tmp3 = (g >= h) ? g : h;
+  assign tmp4 = (i >= j) ? i : j;
+  assign tmp5 = (tmp0 >= tmp1) ? tmp0 : tmp1;
+  assign tmp6 = (tmp2 >= tmp3) ? tmp2 : tmp3;
+  assign tmp7 = (tmp5 >= tmp6) ? tmp5 : tmp6;
+  assign max = (tmp4 >= tmp7) ? tmp4 : tmp7;
 endmodule
