@@ -1,0 +1,49 @@
+module maxpooling (
+  input wire [8:0] i0, i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12, i13, i14, i15,
+  input wire [7:0] exp1, exp2,
+  output wire [8:0] o0, o1, o2, o3
+);
+  wire [2:0] rsb = exp1 - exp2;
+  wire [11:0] tmp0, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7, tmp8, tmp9, tmp10, tmp11, tmp12, tmp13, tmp14, tmp15;
+  assign tmp0 = (i0[8] == 0) ? {i0[7:0], 4'b0000} : {i0[7:0], 4'b0000} >> rsb;
+  assign tmp1 = (i1[8] == 0) ? {i1[7:0], 4'b0000} : {i1[7:0], 4'b0000} >> rsb;
+  assign tmp2 = (i2[8] == 0) ? {i2[7:0], 4'b0000} : {i2[7:0], 4'b0000} >> rsb;
+  assign tmp3 = (i3[8] == 0) ? {i3[7:0], 4'b0000} : {i3[7:0], 4'b0000} >> rsb;
+  assign tmp4 = (i4[8] == 0) ? {i4[7:0], 4'b0000} : {i4[7:0], 4'b0000} >> rsb;
+  assign tmp5 = (i5[8] == 0) ? {i5[7:0], 4'b0000} : {i5[7:0], 4'b0000} >> rsb;
+  assign tmp6 = (i6[8] == 0) ? {i6[7:0], 4'b0000} : {i6[7:0], 4'b0000} >> rsb;
+  assign tmp7 = (i7[8] == 0) ? {i7[7:0], 4'b0000} : {i7[7:0], 4'b0000} >> rsb;
+  assign tmp8 = (i8[8] == 0) ? {i8[7:0], 4'b0000} : {i8[7:0], 4'b0000} >> rsb;
+  assign tmp9 = (i9[8] == 0) ? {i9[7:0], 4'b0000} : {i9[7:0], 4'b0000} >> rsb;
+  assign tmp10 = (i10[8] == 0) ? {i10[7:0], 4'b0000} : {i10[7:0], 4'b0000} >> rsb;
+  assign tmp11 = (i11[8] == 0) ? {i11[7:0], 4'b0000} : {i11[7:0], 4'b0000} >> rsb;
+  assign tmp12 = (i12[8] == 0) ? {i12[7:0], 4'b0000} : {i12[7:0], 4'b0000} >> rsb;
+  assign tmp13 = (i13[8] == 0) ? {i13[7:0], 4'b0000} : {i13[7:0], 4'b0000} >> rsb;
+  assign tmp14 = (i14[8] == 0) ? {i14[7:0], 4'b0000} : {i14[7:0], 4'b0000} >> rsb;
+  assign tmp15 = (i15[8] == 0) ? {i15[7:0], 4'b0000} : {i15[7:0], 4'b0000} >> rsb;
+
+  wire [11:0] tmpo0, tmpo1, tmpo2, tmpo3;
+
+  findmax max0 (.a(tmp0), .b(tmp1), .c(tmp4), .d(tmp5), .max(tmpo0));
+  findmax max1 (.a(tmp2), .b(tmp3), .c(tmp6), .d(tmp7), .max(tmpo1));
+  findmax max2 (.a(tmp8), .b(tmp9), .c(tmp12), .d(tmp13), .max(tmpo2));
+  findmax max3 (.a(tmp10), .b(tmp11), .c(tmp14), .d(tmp15), .max(tmpo3));
+
+  assign o0 = (tmpo0 == tmp0) ? i0 : (tmpo0 == tmp1) ? i1 : (tmpo0 == tmp4) ? i4 : i5;
+  assign o1 = (tmpo1 == tmp2) ? i2 : (tmpo1 == tmp3) ? i3 : (tmpo1 == tmp6) ? i6 : i7;
+  assign o2 = (tmpo2 == tmp8) ? i8 : (tmpo2 == tmp9) ? i9 : (tmpo2 == tmp12) ? i12 : i13;
+  assign o3 = (tmpo3 == tmp10) ? i10 : (tmpo3 == tmp11) ? i11 : (tmpo3 == tmp14) ? i14 : i15;
+
+endmodule
+
+module findmax (
+  input wire [11:0] a, b, c, d,
+  output wire [11:0] max
+);
+
+  wire [11:0] tmp0, tmp1;
+  assign tmp0 = (a >= b) ? a : b;
+  assign tmp1 = (c >= d) ? c : d;
+  assign max = (tmp0 >= tmp1) ? tmp0 : tmp1;
+  
+endmodule
