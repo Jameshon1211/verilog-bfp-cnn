@@ -47,6 +47,28 @@ module bfp (
   //assign bfp6_mant_mod = bfp6_mant >> rsb6;
   //assign bfp7_mant_mod = bfp7_mant >> rsb7;
   //assign bfp8_mant_mod = bfp8_mant >> rsb8;
+
+  //round to positive infinity
+  //assign bfp0_mant_mod = (fp0[31] == 0) ? (bfp0_mant >> rsb0) + 1'b1 : bfp0_mant >> rsb0;
+  //assign bfp1_mant_mod = (fp1[31] == 0) ? (bfp1_mant >> rsb1) + 1'b1 : bfp1_mant >> rsb0;
+  //assign bfp2_mant_mod = (fp2[31] == 0) ? (bfp2_mant >> rsb2) + 1'b1 : bfp2_mant >> rsb0;
+  //assign bfp3_mant_mod = (fp3[31] == 0) ? (bfp3_mant >> rsb3) + 1'b1 : bfp3_mant >> rsb0;
+  //assign bfp4_mant_mod = (fp4[31] == 0) ? (bfp4_mant >> rsb4) + 1'b1 : bfp4_mant >> rsb0;
+  //assign bfp5_mant_mod = (fp5[31] == 0) ? (bfp5_mant >> rsb5) + 1'b1 : bfp5_mant >> rsb0;
+  //assign bfp6_mant_mod = (fp6[31] == 0) ? (bfp6_mant >> rsb6) + 1'b1 : bfp6_mant >> rsb0;
+  //assign bfp7_mant_mod = (fp7[31] == 0) ? (bfp7_mant >> rsb7) + 1'b1 : bfp7_mant >> rsb0;
+  //assign bfp8_mant_mod = (fp8[31] == 0) ? (bfp8_mant >> rsb8) + 1'b1 : bfp8_mant >> rsb0;
+
+  //round to negative infinity
+  //assign bfp0_mant_mod = (fp0[31] == 1) ? (bfp0_mant >> rsb0) + 1'b1 : bfp0_mant >> rsb0;
+  //assign bfp1_mant_mod = (fp1[31] == 1) ? (bfp1_mant >> rsb1) + 1'b1 : bfp1_mant >> rsb0;
+  //assign bfp2_mant_mod = (fp2[31] == 1) ? (bfp2_mant >> rsb2) + 1'b1 : bfp2_mant >> rsb0;
+  //assign bfp3_mant_mod = (fp3[31] == 1) ? (bfp3_mant >> rsb3) + 1'b1 : bfp3_mant >> rsb0;
+  //assign bfp4_mant_mod = (fp4[31] == 1) ? (bfp4_mant >> rsb4) + 1'b1 : bfp4_mant >> rsb0;
+  //assign bfp5_mant_mod = (fp5[31] == 1) ? (bfp5_mant >> rsb5) + 1'b1 : bfp5_mant >> rsb0;
+  //assign bfp6_mant_mod = (fp6[31] == 1) ? (bfp6_mant >> rsb6) + 1'b1 : bfp6_mant >> rsb0;
+  //assign bfp7_mant_mod = (fp7[31] == 1) ? (bfp7_mant >> rsb7) + 1'b1 : bfp7_mant >> rsb0;
+  //assign bfp8_mant_mod = (fp8[31] == 1) ? (bfp8_mant >> rsb8) + 1'b1 : bfp8_mant >> rsb0;
   
   assign bfp0 = {fp0[31], bfp0_mant_mod[8:1]};
   assign bfp1 = {fp1[31], bfp1_mant_mod[8:1]};
