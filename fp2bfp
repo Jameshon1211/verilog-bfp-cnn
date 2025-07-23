@@ -19,7 +19,6 @@ module bfp (
   wire [7:0] rsb0, rsb1, rsb2, rsb3, rsb4, rsb5, rsb6, rsb7, rsb8;
   wire [8:0] bfp0_mant_mod, bfp1_mant_mod, bfp2_mant_mod, bfp3_mant_mod, bfp4_mant_mod, bfp5_mant_mod, bfp6_mant_mod, bfp7_mant_mod, bfp8_mant_mod;
   
-  //Round to nearest, ties away from 0
   assign rsb0 = maxexp0 - fp0[30:23];
   assign rsb1 = maxexp0 - fp1[30:23];
   assign rsb2 = maxexp0 - fp2[30:23];
@@ -30,7 +29,7 @@ module bfp (
   assign rsb7 = maxexp0 - fp7[30:23];
   assign rsb8 = maxexp0 - fp8[30:23];
   
-  //Round toward 0
+  //Round to nearest, ties away from 0
   //assign bfp0_mant_mod = (bfp0_mant >> rsb0) + 1'b1;
   //assign bfp1_mant_mod = (bfp1_mant >> rsb1) + 1'b1;
   //assign bfp2_mant_mod = (bfp2_mant >> rsb2) + 1'b1;
@@ -40,6 +39,8 @@ module bfp (
   //assign bfp6_mant_mod = (bfp6_mant >> rsb6) + 1'b1;
   //assign bfp7_mant_mod = (bfp7_mant >> rsb7) + 1'b1;
   //assign bfp8_mant_mod = (bfp8_mant >> rsb8) + 1'b1;
+
+  //Round toward 0
   //assign bfp0_mant_mod = bfp0_mant >> rsb0;
   //assign bfp1_mant_mod = bfp1_mant >> rsb1;
   //assign bfp2_mant_mod = bfp2_mant >> rsb2;
