@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-module tb_maxpooling;
+module maxpooling_tb;
 
   // Inputs
   reg [7:0] i0, i1, i2, i3,
