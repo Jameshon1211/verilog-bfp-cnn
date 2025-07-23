@@ -11,5 +11,4 @@ modules related to cnn progress:
 2. reluactivation layer + tb                   (100%)
 3. maxpooling layer + tb                       (100%)
 4. fullyconnected layer + tb                   (100%)
-5. softmax activation layer                      (0%)
-6. connection between layers                     (0%)
+5. connection between layers                     (0%)
