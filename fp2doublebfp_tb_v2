@@ -1,0 +1,126 @@
+`timescale 1ns/1ps
+
+module double_bfp_tb;
+
+  // Inputs
+  reg [31:0] fp0, fp1, fp2, fp3, fp4, fp5, fp6, fp7, fp8;
+  reg [7:0] maxexp0, minexp0;
+  // Outputs
+  wire [9:0] bfp0, bfp1, bfp2, bfp3, bfp4, bfp5, bfp6, bfp7, bfp8;
+  wire [7:0] exp1, exp2;
+
+  // Instantiate the BFP module
+  double_bfp uut (
+    .fp0(fp0),
+    .fp1(fp1),
+    .fp2(fp2),
+    .fp3(fp3),
+    .fp4(fp4),
+    .fp5(fp5),
+    .fp6(fp6),
+    .fp7(fp7),
+    .fp8(fp8),
+    .maxexp0(maxexp0),
+    .minexp0(minexp0),
+    .bfp0(bfp0),
+    .bfp1(bfp1),
+    .bfp2(bfp2),
+    .bfp3(bfp3),
+    .bfp4(bfp4),
+    .bfp5(bfp5),
+    .bfp6(bfp6),
+    .bfp7(bfp7),
+    .bfp8(bfp8),
+    .exp1(exp1),
+    .exp2(exp2)
+  );
+
+
+  initial begin
+    $dumpfile("dump.vcd");
+    $dumpvars(0, double_bfp_tb);
+	maxexp0 = 8'b10000011;
+    minexp0 = 8'b01111011;
+ 	// Test Case 1:
+    fp0 = 32'b01000001100000000000000000000000;  // 16.0
+    fp1 = 32'b11000001000000000000000000000000;  // -8.0
+    fp2 = 32'b01000000100000000000000000000000;  // 4.0
+    fp3 = 32'b11000000000000000000000000000000;  // -2.0
+    fp4 = 32'b00111111100000000000000000000000;  // 1.0
+    fp5 = 32'b00111111000000000000000000000000;  // 0.5
+    fp6 = 32'b10111110100000000000000000000000;  // -0.25
+    fp7 = 32'b00111110000000000000000000000000;  // 0.125
+    fp8 = 32'b00111101100000000000000000000000;  // 0.0625
+    #10;
+    $display("Test Case 1:");
+    $display("exp1 = %8b", exp1);
+    $display("exp2 = %8b", exp2);
+    $display("bfp0 = %10b", bfp0);
+    $display("bfp1 = %10b", bfp1);
+    $display("bfp2 = %10b", bfp2);
+    $display("bfp3 = %10b", bfp3);
+    $display("bfp4 = %10b", bfp4);
+    $display("bfp5 = %10b", bfp5);
+    $display("bfp6 = %10b", bfp6);
+    $display("bfp7 = %10b", bfp7);
+    $display("bfp8 = %10b", bfp8);
+    $display("");
+    #10;
+    
+    
+    // Test Case 2:
+    fp0 = 32'b01000001100000000000000000000000;  // 16.0
+    fp1 = 32'b00111101100000000000000000000000;  // 0.0625
+    fp2 = 32'b10111101100000000000000000000000;  // -0.0625
+    fp3 = 32'b00111110010000000000000000000000;  // 0.1875
+    fp4 = 32'b10111110010000000000000000000000;  // -0.1875
+    fp5 = 32'b00111110101000000000000000000000;  // 0.3125
+    fp6 = 32'b10111110101000000000000000000000;  // -0.3125
+    fp7 = 32'b00111110111000000000000000000000;  // 0.4375
+    fp8 = 32'b10111110111000000000000000000000;  // -0.4375
+    #10;
+    $display("Test Case 2:");
+    $display("exp1 = %8b", exp1);
+    $display("exp2 = %8b", exp2);
+    $display("bfp0 = %10b", bfp0);
+    $display("bfp1 = %10b", bfp1);
+    $display("bfp2 = %10b", bfp2);
+    $display("bfp3 = %10b", bfp3);
+    $display("bfp4 = %10b", bfp4);
+    $display("bfp5 = %10b", bfp5);
+    $display("bfp6 = %10b", bfp6);
+    $display("bfp7 = %10b", bfp7);
+    $display("bfp8 = %10b", bfp8);
+    $display("");
+    #10;
+    
+    
+    // Test Case 3:
+    fp0 = 32'h41800000;  // 16.0
+    fp1 = 32'h41000000;  // 8.0
+    fp2 = 32'h40800000;  // 4.0
+    fp3 = 32'h40000000;  // 2.0
+    fp4 = 32'hC0000000;  //-2.0
+    fp5 = 32'hC1000000;  // -8.0
+    fp6 = 32'h3F000000;  // 0.5
+    fp7 = 32'h3E800000;  // 0.25
+    fp8 = 32'h3DCCCCCC;  // ~0.1
+    #10;
+    $display("Test Case 3:");
+    $display("exp1 = %8b", exp1);
+    $display("exp2 = %8b", exp2);
+    $display("bfp0 = %10b", bfp0);
+    $display("bfp1 = %10b", bfp1);
+    $display("bfp2 = %10b", bfp2);
+    $display("bfp3 = %10b", bfp3);
+    $display("bfp4 = %10b", bfp4);
+    $display("bfp5 = %10b", bfp5);
+    $display("bfp6 = %10b", bfp6);
+    $display("bfp7 = %10b", bfp7);
+    $display("bfp8 = %10b", bfp8);
+    $display("");
+    #10;
+    $finish;
+  end
+
+endmodule
