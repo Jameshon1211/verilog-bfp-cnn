@@ -1,0 +1,76 @@
+module convb_tb;
+
+  // Define input/output wires and regs for the convb module
+  reg signed [8:0] in0, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12, in13, in14, in15, in16, in17, in18, in19, in20, in21, in22, in23, in24, in25, in26, in27, in28, in29, in30, in31, in32, in33, in34, in35;
+  reg signed [8:0] w0, w1, w2, w3, w4, w5, w6, w7, w8, b0;
+  reg signed [8:0] gamma, beta, epsilon;
+  reg [7:0] iexp, wexp, bexp;
+
+  wire [20:0] out0, out1, out2, out3, out4, out5, out6, out7, out8, out9, out10, out11, out12, out13, out14, out15;
+  wire [7:0] oexp;
+
+  // Instantiate the convb module
+  convb uut (
+    .in0(in0), .in1(in1), .in2(in2), .in3(in3), .in4(in4), .in5(in5), .in6(in6), .in7(in7), .in8(in8), .in9(in9), .in10(in10), .in11(in11), .in12(in12), .in13(in13), .in14(in14), .in15(in15),
+    .in16(in16), .in17(in17), .in18(in18), .in19(in19), .in20(in20), .in21(in21), .in22(in22), .in23(in23), .in24(in24), .in25(in25), .in26(in26), .in27(in27), .in28(in28), .in29(in29), .in30(in30),
+    .in31(in31), .in32(in32), .in33(in33), .in34(in34), .in35(in35),
+    .w0(w0), .w1(w1), .w2(w2), .w3(w3), .w4(w4), .w5(w5), .w6(w6), .w7(w7), .w8(w8), .b0(b0),
+    .gamma(gamma), .beta(beta), .epsilon(epsilon),
+    .iexp(iexp), .wexp(wexp), .bexp(bexp),
+    .out0(out0), .out1(out1), .out2(out2), .out3(out3), .out4(out4), .out5(out5), .out6(out6), .out7(out7), .out8(out8), .out9(out9), .out10(out10), .out11(out11), .out12(out12), .out13(out13), .out14(out14), .out15(out15),
+    .oexp(oexp)
+  );
+
+  initial begin
+    // Initialize all inputs to zero
+    {in0, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12, in13, in14, in15,
+     in16, in17, in18, in19, in20, in21, in22, in23, in24, in25, in26, in27, in28, in29, in30, in31, in32, in33, in34, in35} = '{default: 9'd0};
+    {w0, w1, w2, w3, w4, w5, w6, w7, w8, b0} = '{default: 9'd0};
+    gamma = 9'd100;
+    beta = 9'd100;
+    epsilon = 9'd16; // Small value like 1e-6 scaled
+    iexp = 8'd0;
+    wexp = 8'd0;
+    bexp = 8'd0;
+
+    // Apply some test data
+    #10;
+    // Test pattern 1: Simple edge detection kernel
+    w0 = 9'd1; w1 = 9'd0; w2 = 9'd-1;
+    w3 = 9'd1; w4 = 9'd0; w5 = 9'd-1;
+    w6 = 9'd1; w7 = 9'd0; w8 = 9'd-1;
+    
+    // Set up a 6x6 input matrix with an edge
+    in0 = 9'd0; in1 = 9'd0; in2 = 9'd0; in3 = 9'd0; in4 = 9'd0; in5 = 9'd0;
+    in6 = 9'd0; in7 = 9'd0; in8 = 9'd0; in9 = 9'd0; in10 = 9'd0; in11 = 9'd0;
+    in12 = 9'd0; in13 = 9'd10; in14 = 9'd10; in15 = 9'd10; in16 = 9'd0; in17 = 9'd0;
+    in18 = 9'd0; in19 = 9'd10; in20 = 9'd10; in21 = 9'd10; in22 = 9'd0; in23 = 9'd0;
+    in24 = 9'd0; in25 = 9'd10; in26 = 9'd10; in27 = 9'd10; in28 = 9'd0; in29 = 9'd0;
+    in30 = 9'd0; in31 = 9'd0; in32 = 9'd0; in33 = 9'd0; in34 = 9'd0; in35 = 9'd0;
+
+    // Wait for a few time units to allow the convolution to complete
+    #100;
+
+    $display("Output Exponent: %d", oexp);
+    $display("Output 0: %d", out0);
+    $display("Output 1: %d", out1);
+    $display("Output 2: %d", out2);
+    $display("Output 3: %d", out3);
+    $display("Output 4: %d", out4);
+    $display("Output 5: %d", out5);
+    $display("Output 6: %d", out6);
+    $display("Output 7: %d", out7);
+    $display("Output 8: %d", out8);
+    $display("Output 9: %d", out9);
+    $display("Output 10: %d", out10);
+    $display("Output 11: %d", out11);
+    $display("Output 12: %d", out12);
+    $display("Output 13: %d", out13);
+    $display("Output 14: %d", out14);
+    $display("Output 15: %d", out15);
+
+    // Finish simulation
+    $finish;
+  end
+
+endmodule
