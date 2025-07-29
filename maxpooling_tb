@@ -21,6 +21,8 @@ module maxpooling_tb;
   );
 
   initial begin
+    $dumpfile("maxpooling_simulation.vcd");
+    $dumpvars(0, maxpooling_tb);
     $display("Starting testbench for maxpooling...");
 
     // Test Case 1: All inputs are distinct
