@@ -70,22 +70,24 @@ module exponent_multiply(
 endmodule
 
 module mantissa_multiply (
-  input [7:0] a, b,
+  input [11:0] a, b,
   output wire [15:0] mantissa
 );
-  assign mantissa = a*b;
+  wire [23:0] tmp_man;
+  assign tmp_man = a*b;
+  assign mantissa = tmp_man[23:8];
 endmodule
 
 module dbfp_multiply (
-  input wire [9:0] a,
+  input wire [12:0] a,
   input wire [8:0] b,
-  output wire [17:0] product
+  output wire [16:0] product
 );
   wire sign;
-  wire mantissa;
+  wire [15:0] mantissa;
   sign_multiply get_sign (.a(a[9]), .b(b[8]), .sign(sign));
   mantissa_multiply get_mantissa (.a(a[7:0]), .b(b[7:0]), .mantissa(mantissa));
-  assign product = {sign, a[8], mantissa};
+  assign product = {sign, mantissa};
 endmodule
 
 module addition (
@@ -104,19 +106,28 @@ module convolution (
   input wire [2:0] man_shift,
   output wire [20:0] out
 );
+  wire signed [12:0] mi0, mi1, mi2, mi3, mi4, mi5, mi6, mi7, mi8;
+  assign mi0 = (i0[8] == 0) ? {i0[9], i0[7:0], 4'b0000} : {i0[9], i0[7:0], 4'b0000} >> man_shift;
+  assign mi1 = (i1[8] == 0) ? {i1[9], i1[7:0], 4'b0000} : {i1[9], i1[7:0], 4'b0000} >> man_shift;
+  assign mi2 = (i2[8] == 0) ? {i2[9], i2[7:0], 4'b0000} : {i2[9], i2[7:0], 4'b0000} >> man_shift;
+  assign mi3 = (i3[8] == 0) ? {i3[9], i3[7:0], 4'b0000} : {i3[9], i3[7:0], 4'b0000} >> man_shift;
+  assign mi4 = (i4[8] == 0) ? {i4[9], i4[7:0], 4'b0000} : {i4[9], i4[7:0], 4'b0000} >> man_shift;
+  assign mi5 = (i5[8] == 0) ? {i5[9], i5[7:0], 4'b0000} : {i5[9], i5[7:0], 4'b0000} >> man_shift;
+  assign mi6 = (i6[8] == 0) ? {i6[9], i6[7:0], 4'b0000} : {i6[9], i6[7:0], 4'b0000} >> man_shift;
+  assign mi7 = (i7[8] == 0) ? {i7[9], i7[7:0], 4'b0000} : {i7[9], i7[7:0], 4'b0000} >> man_shift;
+  assign mi8 = (i8[8] == 0) ? {i8[9], i8[7:0], 4'b0000} : {i8[9], i8[7:0], 4'b0000} >> man_shift;
+
   wire signed [17:0] a, b, c, d, e, f, g, h, i;
-  bfp_multiply a0 (.a(i0), .b(w0), .product(a));
-  bfp_multiply a1 (.a(i1), .b(w1), .product(b));
-  bfp_multiply a2 (.a(i2), .b(w2), .product(c));
-  bfp_multiply a3 (.a(i3), .b(w3), .product(d));
-  bfp_multiply a4 (.a(i4), .b(w4), .product(e));
-  bfp_multiply a5 (.a(i5), .b(w5), .product(f));
-  bfp_multiply a6 (.a(i6), .b(w6), .product(g));
-  bfp_multiply a7 (.a(i7), .b(w7), .product(h));
-  bfp_multiply a8 (.a(i8), .b(w8), .product(i));
-  wire signed [17:0] a1, b1, c1, d1, e1, f1, g1, h1, i1;
-  assign a1 = (a[16] == 0) ? {a[17], a[15:0]} : {a[17], a[15:0] >> max_shift};
-  addition get (.a(a1), .b(b1), .c(c1), .d(d1), .e(e1), .f(f1), .g(g1), .h(h1), .i(i1), .bias(b0), .sum(out));
+  bfp_multiply a0 (.a(mi0), .b(w0), .product(a));
+  bfp_multiply a1 (.a(mi1), .b(w1), .product(b));
+  bfp_multiply a2 (.a(mi2), .b(w2), .product(c));
+  bfp_multiply a3 (.a(mi3), .b(w3), .product(d));
+  bfp_multiply a4 (.a(mi4), .b(w4), .product(e));
+  bfp_multiply a5 (.a(mi5), .b(w5), .product(f));
+  bfp_multiply a6 (.a(mi6), .b(w6), .product(g));
+  bfp_multiply a7 (.a(mi7), .b(w7), .product(h));
+  bfp_multiply a8 (.a(mi8), .b(w8), .product(i));
+  addition get (.a(a), .b(b), .c(c), .d(d), .e(e), .f(f), .g(g), .h(h), .i(i), .bias(b0), .sum(out));
   
 endmodule
 
