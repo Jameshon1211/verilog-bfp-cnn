@@ -3,7 +3,7 @@ module convb (
   input wire signed [8:0] w0, w1, w2, w3, w4, w5, w6, w7, w8, b0,
   input wire [7:0] iexp1, iexp2, wexp, bexp,
   input wire signed [8:0] gamma, beta, epsilon,
-  output wire [20:0] out0, out1, out2, out3, out4, out5, out6, out7, out8, out9, out10, out11, out12, out13, out14, out15,
+  output wire [20:0] dout0, dout1, dout2, dout3, dout4, dout5, dout6, dout7, dout8, dout9, dout10, dout11, dout12, dout13, dout14, dout15,
   output wire [7:0] oexp1, oexp2
 );
   wire signed [8:0] mean;
@@ -30,6 +30,9 @@ module convb (
 
   //may need to change weight and bias exponent
   //need to change weight and bias to [8:0]
+
+  wire [20:0] out0, out1, out2, out3, out4, out5, out6, out7, out8, out9, out10, out11, out12, out13, out14, out15;
+  
   convolution map0 (.i0(in0), .i1(in1), .i2(in2), .i3(in6), .i4(in7), .i5(in8), .i6(in12), .i7(in13), .i8(in14), .w0(we0[16:8]), .w1(we1[16:8]), .w2(we2[16:8]), .w3(we3[16:8]), .w4(we4[16:8]), .w5(we5[16:8]), .w6(we6[16:8]), .w7(we7[16:8]), .w8(we8[16:8]), .b0(be0[24:8]), .man_shift(man_shift), .out(out0));
   convolution map1 (.i0(in1), .i1(in2), .i2(in3), .i3(in7), .i4(in8), .i5(in9), .i6(in13), .i7(in14), .i8(in15), .w0(we0[16:8]), .w1(we1[16:8]), .w2(we2[16:8]), .w3(we3[16:8]), .w4(we4[16:8]), .w5(we5[16:8]), .w6(we6[16:8]), .w7(we7[16:8]), .w8(we8[16:8]), .b0(be0[24:8]), .man_shift(man_shift), .out(out1));
   convolution map2 (.i0(in2), .i1(in3), .i2(in4), .i3(in8), .i4(in9), .i5(in10), .i6(in14), .i7(in15), .i8(in16), .w0(we0[16:8]), .w1(we1[16:8]), .w2(we2[16:8]), .w3(we3[16:8]), .w4(we4[16:8]), .w5(we5[16:8]), .w6(we6[16:8]), .w7(we7[16:8]), .w8(we8[16:8]), .b0(be0[24:8]), .man_shift(man_shift), .out(out2));
@@ -52,7 +55,9 @@ module convb (
   convolution map13 (.i0(in19), .i1(in20), .i2(in21), .i3(in25), .i4(in26), .i5(in27), .i6(in31), .i7(in32), .i8(in33), .w0(we0[16:8]), .w1(we1[16:8]), .w2(we2[16:8]), .w3(we3[16:8]), .w4(we4[16:8]), .w5(we5[16:8]), .w6(we6[16:8]), .w7(we7[16:8]), .w8(we8[16:8]), .b0(be0[24:8]), .man_shift(man_shift), .out(out13));
   convolution map14 (.i0(in20), .i1(in21), .i2(in22), .i3(in26), .i4(in27), .i5(in28), .i6(in32), .i7(in33), .i8(in34), .w0(we0[16:8]), .w1(we1[16:8]), .w2(we2[16:8]), .w3(we3[16:8]), .w4(we4[16:8]), .w5(we5[16:8]), .w6(we6[16:8]), .w7(we7[16:8]), .w8(we8[16:8]), .b0(be0[24:8]), .man_shift(man_shift), .out(out14));
   convolution map15 (.i0(in21), .i1(in22), .i2(in23), .i3(in27), .i4(in28), .i5(in29), .i6(in33), .i7(in34), .i8(in35), .w0(we0[16:8]), .w1(we1[16:8]), .w2(we2[16:8]), .w3(we3[16:8]), .w4(we4[16:8]), .w5(we5[16:8]), .w6(we6[16:8]), .w7(we7[16:8]), .w8(we8[16:8]), .b0(be0[24:8]), .man_shift(man_shift), .out(out15));
-  
+
+
+
 endmodule
 
 module sign_multiply(
@@ -93,7 +98,7 @@ endmodule
 module addition (
   input wire signed [16:0] a, b, c, d, e, f, g, h, i,
   input wire signed [16:0] bias,
-  output wire signed [21:0] sum
+  output wire signed [20:0] sum
 );
   assign sum = $signed(a) + $signed(b) + $signed(c) + $signed(d) + $signed(e) + $signed(f) + $signed(g) + $signed(h) + $signed(i) + $signed(bias);
   
