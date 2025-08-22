@@ -1,5 +1,5 @@
 module convb (
-  input wire signed [8:0] in0,  in1,  in2,  in3,  in4,  in5, in6,  in7,  in8,  in9,  in10, in11, in12, in13, in14, in15, in16, in17, in18, in19, in20, in21, in22, in23, in24, in25, in26, in27, in28, in29, in30, in31, in32, in33, in34, in35,
+  input wire signed [9:0] in0,  in1,  in2,  in3,  in4,  in5, in6,  in7,  in8,  in9,  in10, in11, in12, in13, in14, in15, in16, in17, in18, in19, in20, in21, in22, in23, in24, in25, in26, in27, in28, in29, in30, in31, in32, in33, in34, in35,
   input wire signed [8:0] w0, w1, w2, w3, w4, w5, w6, w7, w8, b0,
   input wire [7:0] iexp1, iexp2, wexp, bexp,
   input wire signed [8:0] gamma, beta, epsilon,
@@ -10,8 +10,46 @@ module convb (
   wire signed [16:0] variance;
   //may need to multiply exponent
   //need to change variance from [16:0] to [8:0]
-  
-  variance_36_numbers first (.in0(in0), .in1(in1), .in2(in2), .in3(in3), .in4(in4), .in5(in5), .in6(in6), .in7(in7), .in8(in8), .in9(in9), .in10(in10), .in11(in11), .in12(in12), .in13(in13), .in14(in14), .in15(in15), .in16(in16), .in17(in17), .in18(in18), .in19(in19), .in20(in20), .in21(in21), .in22(in22), .in23(in23), .in24(in24), .in25(in25), .in26(in26), .in27(in27), .in28(in28), .in29(in29), .in30(in30), .in31(in31), .in32(in32), .in33(in33), .in34(in34), .in35(in35), .mean(mean), .variance(variance));
+  wire [2:0] man_shift = iexp1 - iexp2;
+  wire signed [8:0] din0, din1, din2, din3, din4, din5, din6, din7, din8, din9, din10, din11, din12, din13, din14, din15, din16, din17, din18, din19, din20, din21, din22, din23, din24, din25, din26, din27, din28, din29, din30, din31, din32, din33, din34, din35;
+  assign din0 = (in0[8] == 0) ? {in0[9], in0[7:0]} : {in0[9], in0[7:0]} >> man_shift;
+  assign din1 = (in1[8] == 0) ? {in1[9], in1[7:0]} : {in1[9], in1[7:0]} >> man_shift;
+  assign din2 = (in2[8] == 0) ? {in2[9], in2[7:0]} : {in2[9], in2[7:0]} >> man_shift;
+  assign din3 = (in3[8] == 0) ? {in3[9], in3[7:0]} : {in3[9], in3[7:0]} >> man_shift;
+  assign din4 = (in4[8] == 0) ? {in4[9], in4[7:0]} : {in4[9], in4[7:0]} >> man_shift;
+  assign din5 = (in5[8] == 0) ? {in5[9], in5[7:0]} : {in5[9], in5[7:0]} >> man_shift;
+  assign din6 = (in6[8] == 0) ? {in6[9], in6[7:0]} : {in6[9], in6[7:0]} >> man_shift;
+  assign din7 = (in7[8] == 0) ? {in7[9], in7[7:0]} : {in7[9], in7[7:0]} >> man_shift;
+  assign din8 = (in8[8] == 0) ? {in8[9], in8[7:0]} : {in8[9], in8[7:0]} >> man_shift;
+  assign din9 = (in9[8] == 0) ? {in9[9], in9[7:0]} : {in9[9], in9[7:0]} >> man_shift;
+  assign din10 = (in10[8] == 0) ? {in10[9], in10[7:0]} : {in10[9], in10[7:0]} >> man_shift;
+  assign din11 = (in11[8] == 0) ? {in11[9], in11[7:0]} : {in11[9], in11[7:0]} >> man_shift;
+  assign din12 = (in12[8] == 0) ? {in12[9], in12[7:0]} : {in12[9], in12[7:0]} >> man_shift;
+  assign din13 = (in13[8] == 0) ? {in13[9], in13[7:0]} : {in13[9], in13[7:0]} >> man_shift;
+  assign din14 = (in14[8] == 0) ? {in14[9], in14[7:0]} : {in14[9], in14[7:0]} >> man_shift;
+  assign din15 = (in15[8] == 0) ? {in15[9], in15[7:0]} : {in15[9], in15[7:0]} >> man_shift;
+  assign din16 = (in16[8] == 0) ? {in16[9], in16[7:0]} : {in16[9], in16[7:0]} >> man_shift;
+  assign din17 = (in17[8] == 0) ? {in17[9], in17[7:0]} : {in17[9], in17[7:0]} >> man_shift;
+  assign din18 = (in18[8] == 0) ? {in18[9], in18[7:0]} : {in18[9], in18[7:0]} >> man_shift;
+  assign din19 = (in19[8] == 0) ? {in19[9], in19[7:0]} : {in19[9], in19[7:0]} >> man_shift;
+  assign din20 = (in20[8] == 0) ? {in20[9], in20[7:0]} : {in20[9], in20[7:0]} >> man_shift;
+  assign din21 = (in21[8] == 0) ? {in21[9], in21[7:0]} : {in21[9], in21[7:0]} >> man_shift;
+  assign din22 = (in22[8] == 0) ? {in22[9], in22[7:0]} : {in22[9], in22[7:0]} >> man_shift;
+  assign din23 = (in23[8] == 0) ? {in23[9], in23[7:0]} : {in23[9], in23[7:0]} >> man_shift;
+  assign din24 = (in24[8] == 0) ? {in24[9], in24[7:0]} : {in24[9], in24[7:0]} >> man_shift;
+  assign din25 = (in25[8] == 0) ? {in25[9], in25[7:0]} : {in25[9], in25[7:0]} >> man_shift;
+  assign din26 = (in26[8] == 0) ? {in26[9], in26[7:0]} : {in26[9], in26[7:0]} >> man_shift;
+  assign din27 = (in27[8] == 0) ? {in27[9], in27[7:0]} : {in27[9], in27[7:0]} >> man_shift;
+  assign din28 = (in28[8] == 0) ? {in28[9], in28[7:0]} : {in28[9], in28[7:0]} >> man_shift;
+  assign din29 = (in29[8] == 0) ? {in29[9], in29[7:0]} : {in29[9], in29[7:0]} >> man_shift;
+  assign din30 = (in30[8] == 0) ? {in30[9], in30[7:0]} : {in30[9], in30[7:0]} >> man_shift;
+  assign din31 = (in31[8] == 0) ? {in31[9], in31[7:0]} : {in31[9], in31[7:0]} >> man_shift;
+  assign din32 = (in32[8] == 0) ? {in32[9], in32[7:0]} : {in32[9], in32[7:0]} >> man_shift;
+  assign din33 = (in33[8] == 0) ? {in33[9], in33[7:0]} : {in33[9], in33[7:0]} >> man_shift;
+  assign din34 = (in34[8] == 0) ? {in34[9], in34[7:0]} : {in34[9], in34[7:0]} >> man_shift;
+  assign din35 = (in35[8] == 0) ? {in35[9], in35[7:0]} : {in35[9], in35[7:0]} >> man_shift;
+
+  variance_36_numbers first (.in0(din0), .in1(din1), .in2(din2), .in3(din3), .in4(din4), .in5(din5), .in6(din6), .in7(din7), .in8(din8), .in9(din9), .in10(din10), .in11(din11), .in12(din12), .in13(din13), .in14(din14), .in15(din15), .in16(din16), .in17(din17), .in18(din18), .in19(din19), .in20(din20), .in21(din21), .in22(din22), .in23(din23), .in24(din24), .in25(din25), .in26(din26), .in27(din27), .in28(din28), .in29(din29), .in30(din30), .in31(din31), .in32(din32), .in33(din33), .in34(din34), .in35(din35), .mean(mean), .variance(variance));
   
   wire signed [16:0] we0, we1, we2, we3, we4, we5, we6, we7, we8;
   wire signed [24:0] be;
@@ -26,7 +64,7 @@ module convb (
   exponent_multiply get_exp2(.a(iexp2), .b(new_wexp), .exponent(oexp2));
   wire [7:0] bias_shift = oexp - new_bexp;
   wire signed [24:0] be0 = {be[24], be >> bias_shift};
-  wire [2:0] man_shift = oexp1 - oexp2;
+  //wire [2:0] man_shift = oexp1 - oexp2;
 
   //may need to change weight and bias exponent
   //need to change weight and bias to [8:0]
