@@ -128,8 +128,9 @@ module dbfp_multiply (
 );
   wire sign;
   wire [15:0] mantissa;
-  sign_multiply get_sign (.a(a[9]), .b(b[8]), .sign(sign));
-  mantissa_multiply get_mantissa (.a(a[7:0]), .b(b[7:0]), .mantissa(mantissa));
+  sign_multiply get_sign (.a(a[12]), .b(b[8]), .sign(sign));
+  wire [11:0] bm = {b[7:0], 4'b0000};
+  mantissa_multiply get_mantissa (.a(a[11:0]), .b(bm), .mantissa(mantissa));
   assign product = {sign, mantissa};
 endmodule
 
@@ -160,16 +161,16 @@ module convolution (
   assign mi7 = (i7[8] == 0) ? {i7[9], i7[7:0], 4'b0000} : {i7[9], i7[7:0], 4'b0000} >> man_shift;
   assign mi8 = (i8[8] == 0) ? {i8[9], i8[7:0], 4'b0000} : {i8[9], i8[7:0], 4'b0000} >> man_shift;
 
-  wire signed [17:0] a, b, c, d, e, f, g, h, i;
-  bfp_multiply a0 (.a(mi0), .b(w0), .product(a));
-  bfp_multiply a1 (.a(mi1), .b(w1), .product(b));
-  bfp_multiply a2 (.a(mi2), .b(w2), .product(c));
-  bfp_multiply a3 (.a(mi3), .b(w3), .product(d));
-  bfp_multiply a4 (.a(mi4), .b(w4), .product(e));
-  bfp_multiply a5 (.a(mi5), .b(w5), .product(f));
-  bfp_multiply a6 (.a(mi6), .b(w6), .product(g));
-  bfp_multiply a7 (.a(mi7), .b(w7), .product(h));
-  bfp_multiply a8 (.a(mi8), .b(w8), .product(i));
+  wire signed [16:0] a, b, c, d, e, f, g, h, i;
+  dbfp_multiply a0 (.a(mi0), .b(w0), .product(a));
+  dbfp_multiply a1 (.a(mi1), .b(w1), .product(b));
+  dbfp_multiply a2 (.a(mi2), .b(w2), .product(c));
+  dbfp_multiply a3 (.a(mi3), .b(w3), .product(d));
+  dbfp_multiply a4 (.a(mi4), .b(w4), .product(e));
+  dbfp_multiply a5 (.a(mi5), .b(w5), .product(f));
+  dbfp_multiply a6 (.a(mi6), .b(w6), .product(g));
+  dbfp_multiply a7 (.a(mi7), .b(w7), .product(h));
+  dbfp_multiply a8 (.a(mi8), .b(w8), .product(i));
   addition get (.a(a), .b(b), .c(c), .d(d), .e(e), .f(f), .g(g), .h(h), .i(i), .bias(b0), .sum(out));
   
 endmodule
