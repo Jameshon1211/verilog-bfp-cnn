@@ -3,7 +3,7 @@ module convb (
   input wire signed [8:0] w0, w1, w2, w3, w4, w5, w6, w7, w8, b0,
   input wire [7:0] iexp1, iexp2, wexp, bexp,
   input wire signed [8:0] gamma, beta, epsilon,
-  output wire [20:0] dout0, dout1, dout2, dout3, dout4, dout5, dout6, dout7, dout8, dout9, dout10, dout11, dout12, dout13, dout14, dout15,
+  output wire [20:0] out0, out1, out2, out3, out4, out5, out6, out7, out8, out9, out10, out11, out12, out13, out14, out15,
   output wire [7:0] oexp1, oexp2
 );
   wire signed [8:0] mean;
@@ -62,14 +62,14 @@ module convb (
   
   exponent_multiply get_exp1(.a(iexp1), .b(new_wexp), .exponent(oexp1));
   exponent_multiply get_exp2(.a(iexp2), .b(new_wexp), .exponent(oexp2));
-  wire [7:0] bias_shift = oexp - new_bexp;
+  wire [7:0] bias_shift = oexp1 - new_bexp;
   wire signed [24:0] be0 = {be[24], be >> bias_shift};
   //wire [2:0] man_shift = oexp1 - oexp2;
 
   //may need to change weight and bias exponent
   //need to change weight and bias to [8:0]
 
-  wire [20:0] out0, out1, out2, out3, out4, out5, out6, out7, out8, out9, out10, out11, out12, out13, out14, out15;
+  //wire [20:0] out0, out1, out2, out3, out4, out5, out6, out7, out8, out9, out10, out11, out12, out13, out14, out15;
   
   convolution map0 (.i0(in0), .i1(in1), .i2(in2), .i3(in6), .i4(in7), .i5(in8), .i6(in12), .i7(in13), .i8(in14), .w0(we0[16:8]), .w1(we1[16:8]), .w2(we2[16:8]), .w3(we3[16:8]), .w4(we4[16:8]), .w5(we5[16:8]), .w6(we6[16:8]), .w7(we7[16:8]), .w8(we8[16:8]), .b0(be0[24:8]), .man_shift(man_shift), .out(out0));
   convolution map1 (.i0(in1), .i1(in2), .i2(in3), .i3(in7), .i4(in8), .i5(in9), .i6(in13), .i7(in14), .i8(in15), .w0(we0[16:8]), .w1(we1[16:8]), .w2(we2[16:8]), .w3(we3[16:8]), .w4(we4[16:8]), .w5(we5[16:8]), .w6(we6[16:8]), .w7(we7[16:8]), .w8(we8[16:8]), .b0(be0[24:8]), .man_shift(man_shift), .out(out1));
