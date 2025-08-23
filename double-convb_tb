@@ -51,23 +51,25 @@ module convb_tb;
     // Wait for a few time units to allow the convolution to complete
     #100;
 
-    $display("Output Exponent: %d", oexp);
-    $display("Output 0: %d", out0);
-    $display("Output 1: %d", out1);
-    $display("Output 2: %d", out2);
-    $display("Output 3: %d", out3);
-    $display("Output 4: %d", out4);
-    $display("Output 5: %d", out5);
-    $display("Output 6: %d", out6);
-    $display("Output 7: %d", out7);
-    $display("Output 8: %d", out8);
-    $display("Output 9: %d", out9);
-    $display("Output 10: %d", out10);
-    $display("Output 11: %d", out11);
-    $display("Output 12: %d", out12);
-    $display("Output 13: %d", out13);
-    $display("Output 14: %d", out14);
-    $display("Output 15: %d", out15);
+    $display("Output Exponent 1: %d", oexp1);
+    $display("Output Exponent 2: %d", oexp2);
+    
+    $display("Output 0: %b", out0);
+    $display("Output 1: %b", out1);
+    $display("Output 2: %b", out2);
+    $display("Output 3: %b", out3);
+    $display("Output 4: %b", out4);
+    $display("Output 5: %b", out5);
+    $display("Output 6: %b", out6);
+    $display("Output 7: %b", out7);
+    $display("Output 8: %b", out8);
+    $display("Output 9: %b", out9);
+    $display("Output 10: %b", out10);
+    $display("Output 11: %b", out11);
+    $display("Output 12: %b", out12);
+    $display("Output 13: %b", out13);
+    $display("Output 14: %b", out14);
+    $display("Output 15: %b", out15);
 
     // Finish simulation
     $finish;
