@@ -19,8 +19,6 @@ module bfp_tb;
 
 
   initial begin
-    $dumpfile("dump.vcd");
-    $dumpvars(0, bfp_tb);
 	maxexp0 = 8'b10000011;
     // Test Case 1:
     fp0 = 32'b01000001100000000000000000000000;  // 16.0
