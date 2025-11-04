@@ -1,15 +1,14 @@
 module bfp (
+  input wire clk, rst_n,
   input wire [31:0] fp0,
   input wire [7:0] maxexp0,
-  output wire [8:0] bfp0,
-  output wire [7:0] maxexp1
+  output reg [8:0] bfp0,
+  output reg [7:0] maxexp1
 );
   wire [8:0] bfp0_mant;
   assign bfp0_mant = {1'b1, fp0[22:15]};
-
   wire [7:0] rsb0;
   wire [8:0] bfp0_mant_mod;
-  
   assign rsb0 = maxexp0 - fp0[30:23];
   
   //Round to nearest, ties away from 0
@@ -24,6 +23,15 @@ module bfp (
   //round to negative infinity
   //assign bfp0_mant_mod = (fp0[31] == 1) ? (bfp0_mant >> rsb0) + 1'b1 : bfp0_mant >> rsb0;
   
-  assign bfp0 = {fp0[31], bfp0_mant_mod[8:1]};
-  assign maxexp1 = maxexp0;
+  //assign bfp0 = {fp0[31], bfp0_mant_mod[8:1]};
+  //assign maxexp1 = maxexp0;
+  always @(posedge clk or negedge rst_n) begin
+    if (!rst_n) begin
+      bfp0 <= 9'h000;
+      maxexp1 <= 8'h00;
+    end else begin
+      bfp0 <= {fp0[31], bfp0_mant_mod[8:1]};
+      maxexp1 <= maxexp0;
+    end
+  end
 endmodule
