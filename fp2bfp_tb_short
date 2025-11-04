@@ -3,6 +3,7 @@
 module bfp_tb;
 
   // Inputs
+  reg clk, reg rst_n;
   reg [31:0] fp0;
   reg [7:0] maxexp0;
   // Outputs
@@ -11,42 +12,50 @@ module bfp_tb;
 
   // Instantiate the BFP module
   bfp uut (
+	.clk(clk),
+    .rst_n(rst_n),
     .fp0(fp0),
     .maxexp0(maxexp0),
     .bfp0(bfp0),
     .maxexp1(maxexp1)
   );
-
+  initial begin
+    clk = 0;
+    forever #5 clk = ~clk; // 10ns period (100MHz)
+  end
 
   initial begin
+	rst_n = 0;
 	maxexp0 = 8'b10000011;
     // Test Case 1:
     fp0 = 32'b01000001100000000000000000000000;  // 16.0
     #10;
-    $display("Test Case 1:");
-    $display("maxexp = %8b", maxexp1);
-    $display("bfp0 = %9b", bfp0);
-    $display("");
+    //$display("Test Case 1:");
+    //$display("maxexp = %8b", maxexp1);
+    //$display("bfp0 = %9b", bfp0);
+    //$display("");
     #10;
+	rst_n = 1;
+	#10;
     
     
     // Test Case 2:
     fp0 = 32'b01000001000000000000000000000000;  // 8.0
     #10;
-    $display("Test Case 2:");
-    $display("maxexp = %8b", maxexp1);
-    $display("bfp0 = %9b", bfp0);
-    $display("");
+    //$display("Test Case 2:");
+    //$display("maxexp = %8b", maxexp1);
+    //$display("bfp0 = %9b", bfp0);
+    //$display("");
     #10;
     
     
     // Test Case 3:
     fp0 = 32'h40800000;  // 4.0
     #10;
-    $display("Test Case 3:");
-    $display("maxexp = %8b", maxexp1);
-    $display("bfp0 = %9b", bfp0);
-    $display("");
+    //$display("Test Case 3:");
+    //$display("maxexp = %8b", maxexp1);
+    //$display("bfp0 = %9b", bfp0);
+    //$display("");
     #10;
     $finish;
   end
