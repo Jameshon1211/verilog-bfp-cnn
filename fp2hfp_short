@@ -3,13 +3,16 @@ module hfp (
   input wire [31:0] fp0,
   output reg [15:0] hfp0,
 );
-  wire [7:0] exp_unbiased;
+  wire signed [8:0] exp_unbiased;  // 9 bits to avoid overflow
+  assign exp_unbiased = $signed(fp0[30:23]) - 9'sd127 + 9'sd15;
+  //wire [7:0] exp_unbiased;
+  //assign exp_unbiased = fp0[30:23] - 7'd127 + 4'd15;
   wire [4:0] exp;
-  assign exp_unbiased = fp0[30:23] - 7'd127 + 4'd15;
+
   always @(*) begin
-    if (exp_unbiased > 8'd31)
+    if (exp_unbiased > 9'sd31)
       exp = 5'd31;
-    else if (exp_unbiased < 8'd0)
+    else if (exp_unbiased < 9'sd0)
       exp = 5'd0;
     else
       exp = exp_unbiased[4:0];
