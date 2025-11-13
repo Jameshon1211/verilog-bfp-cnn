@@ -1,0 +1,25 @@
+module hfp (
+  input wire clk, rst_n,
+  input wire [31:0] fp0,
+  output reg [15:0] hfp0,
+);
+  wire [7:0] exp_unbiased;
+  wire [4:0] exp;
+  assign exp_unbiased = fp0[30:23] - 7'd127 + 4'd15;
+  always @(*) begin
+    if (exp_unbiased > 8'd31)
+      exp = 5'd31;
+    else if (exp_unbiased < 8'd0)
+      exp = 5'd0;
+    else
+      exp = exp_unbiased[4:0];
+  end
+
+  always @(posedge clk or negedge rst_n) begin
+    if (!rst_n) begin
+      hfp0 <= 16'h0000;
+    end else begin
+      hfp0 <= {fp0[31], exp,fp0[22:12]};
+    end
+  end
+endmodule
