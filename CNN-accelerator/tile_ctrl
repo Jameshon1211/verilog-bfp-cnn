@@ -1,0 +1,53 @@
+module tile_ctrl #(
+    parameter PIXEL_WIDTH = 8,
+    parameter TILE_SIZE   = 16,  // 例如 16×16 卷積窗口
+    parameter KERNEL_SIZE = 3
+)(
+    input  wire                      clk,
+    input  wire                      rst_n,
+
+    // 輸入像素流（例如從 CIB 來）
+    input  wire [PIXEL_WIDTH-1:0]   pixel_in,
+    input  wire                      pixel_valid,
+
+    // 控制信號
+    input  wire                      next_tile,  // 觸發下一個 CW
+    output reg                       tile_ready, // 當 CW 組好時拉高
+
+    // 卷積窗口輸出
+    output reg [PIXEL_WIDTH-1:0]    cw_out [0:KERNEL_SIZE*KERNEL_SIZE-1]
+);
+
+    // 緩衝區：儲存 TILE_SIZE × TILE_SIZE 的像素
+    reg [PIXEL_WIDTH-1:0] tile_buffer [0:TILE_SIZE*TILE_SIZE-1];
+
+    // 指標與狀態
+    integer i;
+    reg [9:0] pixel_count;
+    reg [9:0] tile_index;
+
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            pixel_count <= 0;
+            tile_index  <= 0;
+            tile_ready  <= 0;
+        end else begin
+            if (pixel_valid) begin
+                tile_buffer[pixel_count] <= pixel_in;
+                pixel_count <= pixel_count + 1;
+            end
+
+            if (next_tile && pixel_count >= TILE_SIZE*TILE_SIZE) begin
+                // 組合 CW（例如取 tile_buffer 中某個 3×3 區塊）
+                for (i = 0; i < KERNEL_SIZE*KERNEL_SIZE; i = i + 1) begin
+                    cw_out[i] <= tile_buffer[tile_index + i];
+                end
+                tile_index <= tile_index + 1;  // 滑動窗口
+                tile_ready <= 1;
+            end else begin
+                tile_ready <= 0;
+            end
+        end
+    end
+
+endmodule
