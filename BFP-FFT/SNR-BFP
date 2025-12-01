@@ -1,0 +1,45 @@
+import torch
+import numpy as np
+
+def get_exponent(x, block_size=64):
+    x_flat = x.view(-1)
+    pad_len = (-len(x_flat)) % block_size
+    if pad_len:
+        x_flat = torch.cat([x_flat, torch.zeros(pad_len, device=x.device)])
+    blocks = x_flat.view(-1, block_size)
+    max_abs = torch.max(torch.abs(blocks), dim=1).values
+    exp = torch.ceil(torch.log2(max_abs + 1e-8))
+    return exp
+
+def bfp_quantize_block(tensor, mantissa_bits=7, block_size=64, rounding_mode='nearest'):
+  if tensor.numel() == 0:
+      return tensor
+  exp = get_exponent(tensor, block_size)
+  x_flat = tensor.view(-1)
+  pad_len = (-len(x_flat)) % block_size
+  if pad_len:
+      x_flat = torch.cat([x_flat, torch.zeros(pad_len, device=tensor.device)])
+  blocks = x_flat.view(-1, block_size)
+  scaled = blocks / (2.0 ** exp.unsqueeze(1))
+  max_val = 2 ** mantissa_bits - 1
+  scaled_int = scaled * max_val
+    
+  quantized_int = torch.round(scaled_int)
+  quantized_int = torch.clamp(quantized_int, -max_val, max_val)
+    
+  dequantized = (quantized_int / max_val) * (2.0 ** exp.unsqueeze(1))
+  dequantized_flat = dequantized.view(-1)[:len(tensor.view(-1))]
+  return dequantized_flat.view_as(tensor)
+
+N = 1024
+x_fp32 = np.random.randn(N) + 1j * np.random.randn(N)
+
+x_bfp = bfp_quantize_block(x_fp32.real, mantissa_bits=7, block_size=64, rounding='nearest') + 1j * bfp_quantize_block(x_fp32.imag, mantissa_bits=7, block_size=64, rounding='nearest')
+
+X_fp32 = np.fft.fft(x_fp32)
+X_bfp  = np.fft.fft(x_bfp)
+
+noise_power = np.mean(np.abs(X_bfp - X_fp32)**2)
+signal_power = np.mean(np.abs(X_fp32)**2)
+snr_db = 10 * np.log10(signal_power / noise_power)
+print(f"SNR: {snr_db:.2f} dB")
